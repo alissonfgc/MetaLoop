@@ -1,75 +1,86 @@
 'use client';
 
-import type { ComponentType } from 'react';
-import { Trophy, Clock, CheckCircle2 } from 'lucide-react';
-
-type IconType = ComponentType<{ size?: number; className?: string }>;
-
 export default function AppHome() {
   return (
-    <div className="max-w-7xl mx-auto grid gap-4">
+    <div className="space-y-4">
+      {/* breadcrumb/título da página */}
+      <div className="bg-card border border-borderc rounded-2xl px-4 py-3">
+        <div className="text-sm font-medium">Home</div>
+      </div>
+
+      {/* bloco: bem-vindo + meta/semana */}
       <section className="bg-card border border-borderc rounded-2xl p-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Bem-vindo ao MetaLoop</h2>
-          <span className="text-xs text-text/60">Iniciada: 01/10</span>
-        </div>
-        <div className="mt-3">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-medium">Meta da semana</span>
-            <span className="text-sm text-text/70">28%</span>
-          </div>
-          <div className="h-3 bg-background border border-borderc rounded-xl overflow-hidden">
-            <div className="h-full bg-primary" style={{ width: '28%' }} />
+        <h2 className="text-lg font-semibold">Bem-vindo ao MetaLoop</h2>
+
+        <div className="mt-4">
+          <div className="text-sm mb-2">Meta da semana</div>
+          <div className="h-2 w-full rounded-full bg-background/70 border border-borderc/60">
+            <div className="h-full w-[28%] rounded-full bg-primary/70" />
           </div>
         </div>
       </section>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPI title="Aproveitamento" value="0,0%" Icon={Trophy} />
-        <KPI title="Horas estudadas" value="00h00m" Icon={Clock} />
-        <KPI title="Questões resolvidas" value="0" Icon={CheckCircle2} />
-        <KPI title="Média (7d)" value="00h00m" Icon={Clock} />
+      {/* KPIs */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-card border border-borderc rounded-2xl p-4">
+          <div className="text-sm text-text/70">Aproveitamento</div>
+          <div className="mt-2 text-2xl font-semibold">0,0%</div>
+        </div>
+
+        <div className="bg-card border border-borderc rounded-2xl p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-text/70">Horas estudadas</div>
+          </div>
+          <div className="mt-2 text-2xl font-semibold tabular-nums">00h00m</div>
+        </div>
+
+        <div className="bg-card border border-borderc rounded-2xl p-4">
+          <div className="text-sm text-text/70">Questões resolvidas</div>
+          <div className="mt-2 text-2xl font-semibold">0</div>
+        </div>
       </section>
 
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="bg-card border border-borderc rounded-2xl p-4 lg:col-span-2">
-          <h3 className="font-semibold mb-3">Minhas atividades</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {[20, 40, 65, 10].map((p, i) => (
-              <div key={i} className="rounded-xl border border-borderc bg-background/40 p-3">
-                <div className="text-sm font-medium">Atividade #{i + 1}</div>
-                <div className="h-2 bg-background border border-borderc rounded mt-3 overflow-hidden">
-                  <div className="h-full bg-primary" style={{ width: `${p}%` }} />
+      {/* atividades + central */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Minhas atividades */}
+        <div className="bg-card border border-borderc rounded-2xl p-4">
+          <h3 className="text-base font-semibold">Minhas atividades</h3>
+
+          <div className="mt-4 space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-borderc p-3 bg-background/60"
+              >
+                <div className="text-sm font-medium">Atividade #{i}</div>
+                <div className="mt-2 h-2 w-full rounded-full bg-card">
+                  <div className="h-full w-[12%] rounded-full bg-primary/70" />
                 </div>
               </div>
             ))}
           </div>
         </div>
+
+        {/* Central */}
         <div className="bg-card border border-borderc rounded-2xl p-4">
-          <h3 className="font-semibold mb-3">Central</h3>
-          <ul className="space-y-2 text-sm">
-            {['Bem-vindo ao MetaLoop 🎉', 'Dica: registre seus estudos', 'Novidades em breve…'].map(
-              (t, i) => (
-                <li key={i} className="p-2 rounded-lg border border-borderc bg-background/30">
-                  {t}
-                </li>
-              )
-            )}
-          </ul>
+          <h3 className="text-base font-semibold">Central</h3>
+
+          <div className="mt-4 space-y-3">
+            {[
+              'Bem-vindo ao MetaLoop 🎉',
+              'Dica: registre seus estudos',
+              'Novidades em breve...',
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="rounded-xl border border-borderc px-3 py-2 bg-background/50"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-    </div>
-  );
-}
-
-function KPI({ title, value, Icon }: { title: string; value: string; Icon: IconType }) {
-  return (
-    <div className="bg-card border border-borderc rounded-2xl p-4">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-text/70">{title}</div>
-        <Icon size={18} className="text-text/60" />
-      </div>
-      <div className="text-2xl font-semibold mt-1">{value}</div>
     </div>
   );
 }

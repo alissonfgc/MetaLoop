@@ -9,6 +9,7 @@ import {
   Play, Square, RotateCcw
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
+import StreakPopover from '@/components/StreakPopover';
 
 type IconType = ComponentType<{ size?: number; className?: string }>;
 
@@ -71,21 +72,6 @@ function TopbarTimer() {
         <RotateCcw size={16} />
       </button>
       <span className="tabular-nums font-medium">{fmt(seconds)}</span>
-    </div>
-  );
-}
-
-/* --------- Badge de continuidade (🔥 X dias) --------- */
-function StreakBadge() {
-  const [days, setDays] = useState<number>(0);
-  useEffect(() => {
-    const raw = localStorage.getItem('streak_days');
-    setDays(raw ? parseInt(raw, 10) || 0 : 0);
-  }, []);
-  return (
-    <div className="hidden sm:flex items-center gap-2 rounded-full bg-background border border-borderc px-3 py-1.5">
-      <span aria-hidden>🔥</span>
-      <span className="text-sm">{days} dias</span>
     </div>
   );
 }
@@ -172,7 +158,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <TopbarTimer />
-            <StreakBadge />
+            <StreakPopover /> {/* 🔥 popover novo */}
             <ProfileMenu />
           </div>
         </header>

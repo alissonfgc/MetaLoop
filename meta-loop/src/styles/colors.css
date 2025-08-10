@@ -1,47 +1,30 @@
-/* =======================
-   🎨 Paleta de cores MetaLoop
-   ======================= */
+/* Paleta com contraste: fundo geral x cards/widgets  */
+
 :root {
-  /* --- Light mode --- */
-  --color-background: #f8f9fa; /* fundo claro */
-  --color-surface: #ffffff; /* cartões e containers */
-  --color-border: #d0d4d9; /* bordas sutis */
-  --color-text: #1c1e21; /* texto principal */
-  --color-text-secondary: #4b4f56; /* texto secundário */
-  --color-primary: #4f46e5; /* azul violeta */
-  --color-primary-hover: #4338ca;
-  --color-accent: #22d3ee; /* ciano */
-  --color-danger: #ef4444; /* vermelho */
-  --color-success: #22c55e; /* verde */
+  /* --- LIGHT --- */
+  --color-background: #f6f7fb; /* fundo da página */
+  --color-card:       #ffffff; /* cards, topbar, sidebar */
+  --color-borderc:    #e5e9f2; /* bordas/sutileza */
+  --color-text:       #0f172a; /* texto padrão */
+  --color-primary:    #3b82f6; /* azul destaque */
+
+  /* extras (opcionais) */
+  --color-muted:   #6b7280;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error:   #ef4444;
 }
 
 .dark {
-  /* --- Dark mode (estilo Obsidian) --- */
-  --color-background: #1e1e2e; /* fundo principal */
-  --color-surface: #2a2a3c; /* cartões/containers */
-  --color-border: #3a3a4d; /* bordas suaves */
-  --color-text: #f1f5f9; /* texto principal */
-  --color-text-secondary: #cbd5e1; /* texto secundário */
-  --color-primary: #89b4fa; /* azul claro */
-  --color-primary-hover: #74a8f5;
-  --color-accent: #94e2d5; /* verde água */
-  --color-danger: #f38ba8; /* vermelho rosado */
-  --color-success: #a6e3a1; /* verde pastel */
-}
+  /* --- DARK --- */
+  --color-background: #0e1525; /* fundo principal */
+  --color-card:       #151c2f; /* cards/widgets/topbar/sidebar */
+  --color-borderc:    #24314d; /* bordas */
+  --color-text:       #d9e3f0;
+  --color-primary:    #6aa3ff;
 
-/* Aplicação base */
-html, body {
-  background-color: var(--color-background);
-  color: var(--color-text);
-}
-
-/* Elementos padrões */
-button {
-  background-color: var(--color-primary);
-  color: white;
-  border-radius: 0.5rem;
-}
-
-button:hover {
-  background-color: var(--color-primary-hover);
+  --color-muted:   #8a99b2;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error:   #f87171;
 }

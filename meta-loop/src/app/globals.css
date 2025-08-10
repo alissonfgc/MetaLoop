@@ -1,12 +1,17 @@
 /* Tailwind v4 */
 @import "tailwindcss";
 
-/* Sua paleta (light/dark) */
+/* Sua paleta */
 @import "../styles/colors.css";
 
-/* Globais mínimos */
+/* basezinha para garantir as cores do body */
 html, body {
-  min-height: 100%;
-  background: var(--color-background);
+  background-color: var(--color-background);
   color: var(--color-text);
+}
+
+/* opcional: melhora foco de keyboard no dark */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
