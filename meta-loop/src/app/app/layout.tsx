@@ -1,19 +1,16 @@
-'use client';
-
+// src/app/app/layout.tsx
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { useEffect, useRef, useState, type ComponentType } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-import {
-  Home, Target, BarChart2, ClipboardList, RefreshCw, BookOpen,
-  Play, Square, RotateCcw
-} from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
-import StreakPopover from '@/components/StreakPopover';
+import { Home, Target, BarChart2, ClipboardList, RefreshCw, BookOpen } from 'lucide-react';
+import HeaderClient from '@/components/HeaderClient';
 
-type IconType = ComponentType<{ size?: number; className?: string }>;
+export const metadata: Metadata = {
+  title: 'MetaLoop — App',
+};
 
-const NAV: Array<{ href: string; label: string; icon: IconType }> = [
+type NavItem = { href: string; label: string; icon: React.ComponentType<{ size?: number; className?: string }> };
+
+const NAV: NavItem[] = [
   { href: '/app', label: 'Home', icon: Home },
   { href: '/app/metas', label: 'Metas', icon: Target },
   { href: '/app/desempenho', label: 'Desempenho', icon: BarChart2 },
@@ -22,114 +19,17 @@ const NAV: Array<{ href: string; label: string; icon: IconType }> = [
   { href: '/app/materiais', label: 'Materiais', icon: BookOpen },
 ];
 
-function NavItem({ href, label, Icon }: { href: string; label: string; Icon: IconType }) {
-  const pathname = usePathname();
-  const active = pathname === href;
+function NavLink({ href, label, icon: Icon }: NavItem) {
+  // Server Component -> Link simples; o active fica no client dentro do HeaderClient
   return (
     <Link
       href={href}
-      className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 transition-colors
-        ${active ? 'bg-primary/10 text-text' : 'hover:bg-primary/10 text-text/80'}`}
+      className="group relative flex items-center gap-3 rounded-xl px-3 py-2 text-text/80 hover:text-text hover:bg-primary/10 transition-colors"
     >
-      {/* Indicador de continuidade (barra à esquerda) */}
-      <span
-        className={`absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r
-          ${active ? 'bg-primary' : 'bg-transparent group-hover:bg-primary/60'}`}
-      />
+      <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-transparent group-hover:bg-primary/60" />
       <Icon size={18} />
       <span className="hidden lg:inline">{label}</span>
     </Link>
-  );
-}
-
-/* --------- Timer simples (UI) --------- */
-function TopbarTimer() {
-  const [running, setRunning] = useState(false);
-  const [seconds, setSeconds] = useState(0);
-
-  useEffect(() => {
-    if (!running) return;
-    const id = setInterval(() => setSeconds((s) => s + 1), 1000);
-    return () => clearInterval(id);
-  }, [running]);
-
-  function fmt(sec: number) {
-    const h = Math.floor(sec / 3600).toString().padStart(2, '0');
-    const m = Math.floor((sec % 3600) / 60).toString().padStart(2, '0');
-    const s = (sec % 60).toString().padStart(2, '0');
-    return `${h}:${m}:${s}`;
-  }
-
-  return (
-    <div className="flex items-center gap-2 bg-background border border-borderc rounded-lg pl-2 pr-3 py-1.5">
-      <button onClick={() => setRunning(true)} className="p-1 rounded hover:bg-primary/10" title="Iniciar">
-        <Play size={16} />
-      </button>
-      <button onClick={() => setRunning(false)} className="p-1 rounded hover:bg-primary/10" title="Pausar">
-        <Square size={16} />
-      </button>
-      <button onClick={() => { setSeconds(0); setRunning(false); }} className="p-1 rounded hover:bg-primary/10" title="Zerar">
-        <RotateCcw size={16} />
-      </button>
-      <span className="tabular-nums font-medium">{fmt(seconds)}</span>
-    </div>
-  );
-}
-
-/* --------- Menu do Perfil (avatar + dropdown com Sair) --------- */
-function ProfileMenu() {
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [initials, setInitials] = useState<string>('U');
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      const name = (user?.user_metadata?.name as string | undefined) || user?.email || 'User';
-      const init = name.trim().split(' ').map(p => p[0]?.toUpperCase()).slice(0, 2).join('') || 'U';
-      setInitials(init);
-    })();
-  }, []);
-
-  useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (!menuRef.current) return;
-      if (!menuRef.current.contains(e.target as Node)) setOpen(false);
-    }
-    if (open) window.addEventListener('click', onClick);
-    return () => window.removeEventListener('click', onClick);
-  }, [open]);
-
-  async function signOut() {
-    await supabase.auth.signOut();
-    document.cookie = 'ml-session=; Path=/; Max-Age=0; SameSite=Lax';
-    router.push('/');
-  }
-
-  return (
-    <div className="relative" ref={menuRef}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="h-9 w-9 rounded-full bg-background border border-borderc flex items-center justify-center font-semibold"
-        aria-label="Abrir menu do usuário"
-      >
-        {initials}
-      </button>
-
-      {open && (
-        <div className="absolute right-0 mt-2 w-44 bg-card border border-borderc rounded-xl shadow z-50">
-          <button className="w-full text-left px-3 py-2 hover:bg-primary/10 rounded-t-xl">Perfil</button>
-          <button className="w-full text-left px-3 py-2 hover:bg-primary/10">Suporte</button>
-          <button
-            onClick={signOut}
-            className="w-full text-left px-3 py-2 text-error hover:bg-error/10 rounded-b-xl"
-          >
-            Sair
-          </button>
-        </div>
-      )}
-    </div>
   );
 }
 
@@ -144,26 +44,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
         <nav className="p-2 space-y-1 flex-1">
           {NAV.map((n) => (
-            <NavItem key={n.href} href={n.href} label={n.label} Icon={n.icon} />
+            <NavLink key={n.href} {...n} />
           ))}
         </nav>
       </aside>
 
-      {/* Main column */}
+      {/* Coluna principal */}
       <div className="flex-1 flex flex-col">
-        {/* Topbar */}
-        <header className="h-16 bg-card border-b border-borderc flex items-center justify-between px-3 lg:px-4 gap-3">
-          <div className="text-sm lg:text-base font-medium">Home</div>
+        {/* Topbar com timer / tema / streak / perfil */}
+        <HeaderClient />
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <TopbarTimer />
-            <StreakPopover /> {/* 🔥 popover novo */}
-            <ProfileMenu />
-          </div>
-        </header>
-
-        <main className="p-3 lg:p-4">{children}</main>
+        {/* IMPORTANTÍSSIMO: nada de max-w aqui. A própria página controla a largura */}
+        <main className="px-3 lg:px-6 py-4">{children}</main>
       </div>
     </div>
   );

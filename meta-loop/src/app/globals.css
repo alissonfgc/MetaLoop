@@ -4,6 +4,10 @@
 /* Sua paleta */
 @import "../styles/colors.css";
 
+@import 'tailwindcss/preflight';
+@import 'tailwindcss/utilities';
+
+
 /* basezinha para garantir as cores do body */
 html, body {
   background-color: var(--color-background);
@@ -14,4 +18,13 @@ html, body {
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* Garantir que nunca caiam como transparent */
+.bg-card {
+  background-color: var(--color-card) !important;
+}
+
+.bg-background {
+  background-color: var(--color-background) !important;
 }
