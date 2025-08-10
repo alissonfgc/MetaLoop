@@ -4,21 +4,20 @@ import { useEffect, useState } from 'react';
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
 
-  // Ler tema inicial (em sincronia com o script do layout)
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('theme');
-      const preferDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDark(stored ? stored === 'dark' : preferDark);
-    } catch {}
+    const html = document.documentElement;
+    const stored = localStorage.getItem('theme');
+    if (stored) setIsDark(stored === 'dark');
+    else setIsDark(html.classList.contains('dark'));
   }, []);
 
   useEffect(() => {
+    const html = document.documentElement;
     if (isDark) {
-      document.documentElement.classList.add('dark');
+      html.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      html.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
@@ -26,10 +25,10 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      onClick={() => setIsDark((v) => !v)}
-      className="px-3 py-1 rounded bg-primary text-white hover:bg-secondary transition-colors"
-      aria-label="Alternar tema"
+      onClick={() => setIsDark(v => !v)}
+      className="h-9 w-9 rounded-lg border border-borderc bg-background hover:bg-primary/10 flex items-center justify-center"
       title={isDark ? 'Modo escuro' : 'Modo claro'}
+      aria-label="Alternar tema"
     >
       {isDark ? '🌙' : '☀️'}
     </button>
