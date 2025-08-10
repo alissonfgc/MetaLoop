@@ -1,16 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ComponentType } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabaseClient';
 import {
   Home, Target, BarChart2, ClipboardList, RefreshCw, BookOpen,
-  LogOut, Play, Square, RotateCcw
+  Play, Square, RotateCcw
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 
-const NAV = [
+type IconType = ComponentType<{ size?: number; className?: string }>;
+
+const NAV: Array<{ href: string; label: string; icon: IconType }> = [
   { href: '/app', label: 'Home', icon: Home },
   { href: '/app/metas', label: 'Metas', icon: Target },
   { href: '/app/desempenho', label: 'Desempenho', icon: BarChart2 },
@@ -19,7 +21,7 @@ const NAV = [
   { href: '/app/materiais', label: 'Materiais', icon: BookOpen },
 ];
 
-function NavItem({ href, label, Icon }: { href: string; label: string; Icon: any }) {
+function NavItem({ href, label, Icon }: { href: string; label: string; Icon: IconType }) {
   const pathname = usePathname();
   const active = pathname === href;
   return (
@@ -77,7 +79,6 @@ function TopbarTimer() {
 function StreakBadge() {
   const [days, setDays] = useState<number>(0);
   useEffect(() => {
-    // MVP: lê de localStorage; depois podemos calcular por RPC
     const raw = localStorage.getItem('streak_days');
     setDays(raw ? parseInt(raw, 10) || 0 : 0);
   }, []);
@@ -160,7 +161,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <NavItem key={n.href} href={n.href} label={n.label} Icon={n.icon} />
           ))}
         </nav>
-        {/* ❌ Removemos o botão “Sair” daqui — agora fica no menu do perfil */}
       </aside>
 
       {/* Main column */}

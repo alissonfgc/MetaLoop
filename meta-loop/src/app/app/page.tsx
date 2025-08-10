@@ -1,6 +1,9 @@
 'use client';
 
+import type { ComponentType } from 'react';
 import { Trophy, Clock, CheckCircle2 } from 'lucide-react';
+
+type IconType = ComponentType<{ size?: number; className?: string }>;
 
 export default function AppHome() {
   return (
@@ -59,7 +62,7 @@ export default function AppHome() {
   );
 }
 
-function KPI({ title, value, Icon }: { title: string; value: string; Icon: any }) {
+function KPI({ title, value, Icon }: { title: string; value: string; Icon: IconType }) {
   return (
     <div className="bg-card border border-borderc rounded-2xl p-4">
       <div className="flex items-center justify-between">
