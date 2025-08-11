@@ -1,0 +1,16 @@
+/* src/styles/colors.css – exemplo */
+:root {
+  --color-background: #0f172a;   /* slate-900/950 vibe */
+  --color-card:       #111827;   /* fundo dos widgets */
+  --color-text:       #e5e7eb;   /* texto principal */
+  --color-primary:    #8ab4ff;   /* acentos/realces */
+  --color-border:     rgba(255,255,255,.08);
+}
+
+:root.light {
+  --color-background: #f8fafc;
+  --color-card:       #ffffff;
+  --color-text:       #0f172a;
+  --color-primary:    #335eea;
+  --color-border:     rgba(2,6,23,.12);
+}

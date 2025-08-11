@@ -1,30 +1,36 @@
-/* Tailwind v4 */
+/* src/app/globals.css  (Tailwind v4) */
 @import "tailwindcss";
-
-/* Sua paleta */
+/* Paleta com suas CSS vars */
 @import "../styles/colors.css";
 
-@import 'tailwindcss/preflight';
-@import 'tailwindcss/utilities';
-
-
-/* basezinha para garantir as cores do body */
+/* base: garante fundo e texto sempre aplicados */
 html, body {
   background-color: var(--color-background);
   color: var(--color-text);
+  min-height: 100%;
 }
 
-/* opcional: melhora foco de keyboard no dark */
+/* tipografia levinha e suavização */
+:root {
+  --radius: 12px; /* se usar em bordas arredondadas */
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* foco acessível */
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-/* Garantir que nunca caiam como transparent */
-.bg-card {
-  background-color: var(--color-card) !important;
-}
+/* Classes utilitárias que amarram nas suas vars (fallbacks inclusos) */
+.bg-background { background-color: var(--color-background, #0f172a) !important; }
+.bg-card       { background-color: var(--color-card, #111827) !important; }
+.text-text     { color: var(--color-text, #e5e7eb) !important; }
+.border-borderc{ border-color: var(--color-border, rgba(255,255,255,.08)) !important; }
 
-.bg-background {
-  background-color: var(--color-background) !important;
-}
+/* opcional: evita que algum reset zere links/btns */
+a { color: inherit; text-decoration: none; }
