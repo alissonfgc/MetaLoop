@@ -1,4 +1,4 @@
-// src/app/app/layout.tsx
+// src/app/layout.tsx
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Home, Target, BarChart2, ClipboardList, RefreshCw, BookOpen } from 'lucide-react';
